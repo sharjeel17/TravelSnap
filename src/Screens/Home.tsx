@@ -41,7 +41,7 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
             //and runs the code inside the curly braces
             //code inside curl braces/function will return/render a pressable component 
             //which has an Image component inside of it
-            //upon pressing anything iside the Pressable component (the Image)
+            //upon pressing anything inside the Pressable component (the Image)
             //a function will run which then invokes/runs another function called goToDetailsPage
             //and passes the information of the clicked item to the goToDetailsPage function as an argument
             renderItem = {({item}: {item: Photos}) => {
@@ -50,7 +50,6 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
                     goToDetailsPage(item)
                 }}>
                     <Image source={{uri: item.thumbnailUrl+"png"}} style={{width: 400, height: 400}} />
-                    <Text>Should render here</Text>
                 </Pressable>
             )
             }} 
