@@ -1,5 +1,7 @@
-import { Button, Text, View } from "react-native";
+import { Alert, Button, Text, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { ref, uploadBytes } from "firebase/storage"
+import { imageDb } from "../Firebase/Firebase";
 
 export default function UploadPhoto(){
 
@@ -8,6 +10,10 @@ export default function UploadPhoto(){
         try{
             let response: Response = await fetch(uri);
             let data: Blob = await response.blob();
+            const imageRef = ref(imageDb, `images/${name}`);
+            uploadBytes(imageRef, data).then(()=>{
+                Alert.alert("image uploaded");
+            }).catch(err => {console.error(err)})
         }catch(err){
             console.error(err)
         }
