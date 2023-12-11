@@ -1,6 +1,6 @@
 import { Alert, Button, Text, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { ref, uploadBytes, uploadBytesResumable } from "firebase/storage"
+import { ref, uploadBytesResumable } from "firebase/storage"
 import { imageDb } from "../Firebase/Firebase";
 
 export default function UploadPhoto(){
@@ -10,12 +10,9 @@ export default function UploadPhoto(){
         try{
             
             let response: Response = await fetch(uri);
-            console.log("works here 1");
             let data: Blob = await response.blob();
-            console.log("works here 2");
 
             const imageRef = ref(imageDb, `images/${name}`);
-            console.log("works here 3");
             uploadBytesResumable(imageRef, data).then(()=>{
                  Alert.alert("image uploaded");
             }).catch(err => {console.error(err)})
@@ -48,8 +45,6 @@ export default function UploadPhoto(){
 
         //convert resulting/created uri to blob to send to backend
         if(!result.canceled){
-            console.log("image uploaded");
-            console.log(result.assets[0].base64);
             let date = new Date();
             await createFileFromUri(result.assets[0].uri, date.toISOString());
         }
