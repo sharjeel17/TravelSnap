@@ -30,8 +30,7 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
                 console.log(item.thumbnailUrl);
                 return (
                     <Pressable>
-                        <View></View>
-                        <Image style={{height: 300, width: 300}} source={{uri: 'https://placehold.co/1000x1000/orange/white'}}/>
+                        <Image source={{uri: item.thumbnailUrl+"png"}} style={{width: 400, height: 400}} />
                         <Text>Should render here</Text>
                     </Pressable>
                 )
