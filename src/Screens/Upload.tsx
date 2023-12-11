@@ -1,6 +1,6 @@
 import { Alert, Button, Text, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { ref, uploadBytes } from "firebase/storage"
+import { ref, uploadBytes, uploadBytesResumable } from "firebase/storage"
 import { imageDb } from "../Firebase/Firebase";
 
 export default function UploadPhoto(){
@@ -8,11 +8,16 @@ export default function UploadPhoto(){
     //function to convert uri of image to a blob
     async function createFileFromUri(uri: string, name: string){
         try{
+            
             let response: Response = await fetch(uri);
+            console.log("works here 1");
             let data: Blob = await response.blob();
+            console.log("works here 2");
+
             const imageRef = ref(imageDb, `images/${name}`);
-            uploadBytes(imageRef, data).then(()=>{
-                Alert.alert("image uploaded");
+            console.log("works here 3");
+            uploadBytesResumable(imageRef, data).then(()=>{
+                 Alert.alert("image uploaded");
             }).catch(err => {console.error(err)})
         }catch(err){
             console.error(err)
@@ -26,7 +31,7 @@ export default function UploadPhoto(){
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4,3],
-            quality: 1
+            quality: 0.75
         }
         let result: ImagePicker.ImagePickerResult;
 
@@ -44,8 +49,9 @@ export default function UploadPhoto(){
         //convert resulting/created uri to blob to send to backend
         if(!result.canceled){
             console.log("image uploaded");
-            console.log(result.assets[0].uri);
-            await createFileFromUri(result.assets[0].uri, "newImageName");
+            console.log(result.assets[0].base64);
+            let date = new Date();
+            await createFileFromUri(result.assets[0].uri, date.toISOString());
         }
     }
 
