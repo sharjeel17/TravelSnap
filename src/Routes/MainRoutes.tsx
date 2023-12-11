@@ -1,8 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import UploadPhoto from "../Screens/Upload";
-import Profile from "../Screens/Profile";
+import UploadPhoto from "../pages/Upload";
+import Profile from "../pages/Profile";
 import HomeRoute from "./HomeRoute";
 
 const Tab = createBottomTabNavigator();

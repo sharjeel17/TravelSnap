@@ -1,5 +1,5 @@
-import Home from '../../src/Screens/Home';
-import PhotoDetails from '../../src/Screens/PhotoDetails';
+import Home from '../pages/Home';
+import PhotoDetails from '../pages/PhotoDetails';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
