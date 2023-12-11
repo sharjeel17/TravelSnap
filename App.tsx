@@ -3,11 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from './src/Screens/Home';
 import PhotoDetails from './src/Screens/PhotoDetails';
 
+//create stack navigation variable to use
 const StackNav = createNativeStackNavigator();
 
 export default function App() {
 
   return (
+    //Everything inside the navigator as a Screen component can be navigated to
     <NavigationContainer>
       <StackNav.Navigator initialRouteName="Home">
         <StackNav.Screen name="Home" component={Home} />
@@ -16,12 +18,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
