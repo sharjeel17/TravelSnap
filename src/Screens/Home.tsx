@@ -46,10 +46,10 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
             //and passes the information of the clicked item to the goToDetailsPage function as an argument
             renderItem = {({item}: {item: Photos}) => {
             return (
-                <Pressable onPress={() => {
+                <Pressable className="mb-6" onPress={() => {
                     goToDetailsPage(item)
                 }}>
-                    <Image source={{uri: item.thumbnailUrl+"png"}} style={{width: 400, height: 400}} />
+                    <Image className="h-96 w-100" source={{uri: item.thumbnailUrl+"png"}}/>
                 </Pressable>
             )
             }} 
