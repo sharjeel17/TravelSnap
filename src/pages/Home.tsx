@@ -1,22 +1,35 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
-import { Button, FlatList, GestureResponderEvent, Image, ListRenderItem, Pressable, ScrollView, Text, View } from "react-native";
+import { FlatList, Image, Pressable, View } from "react-native";
 import { Photos } from '../types/types';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { captionDb } from '../Firebase/Firebase';
 
 export default function Home({navigation}: NativeStackScreenProps<any>){
-    const [photos, setPhotos] = useState([]);
+    const [photos, setPhotos] = useState<Photos[]>([]);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     //get posts from url and put them in photos state variable to use in FlatList
     const getPosts = async () => {
         try{
-        const response = await fetch("https://jsonplaceholder.typicode.com/photos?_limit=10");
-        const data = await response.json();
-        setPhotos(data);
+            setIsRefreshing(true);
+            //get current photo ID which the new photo will have/be set to
+            const refID = query(collection(captionDb, "PhotoDetails"), orderBy("ID", "desc"));
+            let dataID = await getDocs(refID);
 
-        } 
-        catch (err){
+            //keep ID in a variable
+            let photoDetails = dataID.docs.map((doc) => {
+                return doc.data();
+            });
+
+            setPhotos(photoDetails as Photos[]);
+            setIsRefreshing(false);
+        } catch(err) {
+            setIsRefreshing(false);
             console.error(err);
+
         }
+        
     }
 
     //useffect function only runs on first/initial render of the page
@@ -24,6 +37,10 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
     useEffect(() => {
         getPosts();
     }, [])
+
+    function handleRefresh(){
+        getPosts();
+    }
 
     //takes in the selected item as an argument
     //navigates to the Details page/screen and passes item data to the screen
@@ -49,11 +66,13 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
                 <Pressable className="mb-6" onPress={() => {
                     goToDetailsPage(item)
                 }}>
-                    <Image className="h-96 w-100" source={{uri: item.thumbnailUrl+"png"}}/>
+                    <Image className="h-96 w-100" source={{uri: item.Photo}}/>
                 </Pressable>
             )
-            }} 
-
+            }}
+            keyExtractor={item => String(item.ID)} 
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
         />
     </View>
   );

@@ -1,7 +1,6 @@
 export interface Photos {
-    albumId: number,
-    id: number,
-    title: string,
-    url: string,
-    thumbnailUrl: string
+    Caption: string,
+    ID: number,
+    Photo: string,
+    Comments: number[]
 }
