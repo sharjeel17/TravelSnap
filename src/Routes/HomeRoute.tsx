@@ -1,7 +1,5 @@
-import { KeyboardAvoidingView } from 'react-native';
 import Home from '../pages/Home';
 import PhotoDetails from '../pages/PhotoDetails';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //create stack navigation variable to use

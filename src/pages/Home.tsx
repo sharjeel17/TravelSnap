@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { FlatList, Image, Pressable, View } from "react-native";
 import { Photos } from '../types/types';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { mainDb } from '../Firebase/Firebase';
+import { mainDb } from '../FirebaseConfig/Firebase';
 
 export default function Home({navigation}: NativeStackScreenProps<any>){
 

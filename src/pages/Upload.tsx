@@ -4,7 +4,7 @@ import { ActivityIndicator, Alert, Button, Image,
         TouchableWithoutFeedback, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
-import { imageDb, mainDb } from "../Firebase/Firebase";
+import { imageDb, mainDb } from "../FirebaseConfig/Firebase";
 import { addDoc, collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 
