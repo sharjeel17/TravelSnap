@@ -71,6 +71,14 @@ export default function UploadPhoto(){
     //function also calls UploadCaption function to upload the caption and other data to firestore
     async function UploadPhotoFunc(){
         try{
+
+            //check if user has selected an image
+            //previewImage will be an empty string if no image is selected
+            if(previewImage === ""){
+                Alert.alert("Please select an image before you upload");
+                return;
+            }
+
             setIsUploading(true);
             //convert uri/path to blob
             let image = await createFileFromUri(previewImage);
@@ -97,6 +105,7 @@ export default function UploadPhoto(){
     }
 
     //function to handle selecting image from either camera roll or camera
+    //and displaying the preview to the user
     async function selectImage(useCameraRoll: boolean){
 
         //options for how the image will be saved and rendered
