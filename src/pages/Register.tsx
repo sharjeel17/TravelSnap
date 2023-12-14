@@ -20,14 +20,19 @@ export default function Register(){
             return false;
         }
 
-        //validation
-        if(email === '' || password === ''){
-            Alert.alert("Please enter email and password");
+        if(email === ''){
+            Alert.alert("Please enter email");
+            return false;
+        }
+
+        if (password === ''){
+            Alert.alert("Please enter a password");
             return false;
         }
 
         if(password.length < 6){
             Alert.alert("Password error", "Password must be at least 6 characters long");
+            return false;
         }
         //validation
         if (repassword !== password){
