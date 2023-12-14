@@ -115,7 +115,7 @@ export default function Comments({ photoId }: Props){
             data={comments}
             renderItem = {({item}: {item: Comment}) => {
             return (
-                <View className='mb-2 px-2 bg-white shadow-lg rounded-md'>
+                <View className='mb-2 px-2 bg-[#F6f6f6] shadow-lg rounded-md'>
                     <Text className='pb-1'>Posted by: {item.PostedBy}</Text>
                     <Text>{item.Comment}</Text>
                 </View>
@@ -125,7 +125,7 @@ export default function Comments({ photoId }: Props){
         />
             <View className='mt-2'>
                 <TextInput  
-                className='bg-white px-2 py-3 mb-3 rounded-lg border-x-2 mx-1'
+                className='bg-[#F6f6f6] px-2 py-3 mb-3 rounded-lg border-x-2 mx-1'
                 placeholder='type comment'
                 onChangeText={setNewComment}
                 value={newComment}/>

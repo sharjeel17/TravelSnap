@@ -34,9 +34,9 @@ export default function Login({navigation}: NativeStackScreenProps<any>){
     }
 
     return (
-        <ScrollView className='flex-1 bg-gray-600'>
+        <ScrollView className='flex bg-[#1A1C20] px-3 space-y-1 py-[50%]'>
         {/* <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={height + 47} className='bg-white'> */}
-            <Text className="text-lg mx-2 mt-10">Email</Text>
+            <Text className="text-lg font-light text-[#FFF6F6] mx-2 mt-10">Email</Text>
             <TextInput 
                 className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
                 placeholder='Enter your email' 
@@ -45,7 +45,7 @@ export default function Login({navigation}: NativeStackScreenProps<any>){
                 autoCapitalize='none'
                 autoCorrect/>
 
-            <Text className="text-lg mx-2">Password</Text>
+            <Text className="text-lg font-light text-[#FFF6F6] mx-2">Password</Text>
             <TextInput 
                 className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
                 placeholder='Enter your password' 

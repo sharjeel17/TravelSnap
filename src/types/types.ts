@@ -2,7 +2,9 @@ export interface Photos {
     Id: number,
     Photo: string,
     Caption: string,
-    Comments: number[]
+    Comments: number[],
+    PostedBy: string,
+    PostedById: string
 }
 
 export type Comment = {

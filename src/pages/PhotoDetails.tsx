@@ -11,11 +11,12 @@ export default function PhotoDetails({route}: NativeStackScreenProps<any>){
 
     return (
         
-        <View className='flex-1 bg-black'>
-            <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={height + 47} className='flex-1 bg-white'>
+        <View className='flex-1 bg-[#1A1C20]'>
+            <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={height + 47} className='flex-1 bg-[#1A1C20]'>
                 <View>
-                    <Image className="mt-4 w-60 h-60 self-center" source={{uri: photo.Photo}} />
-                    <Text className="mt-2 mb-5 pl-3 bg-slate-100 shadow-lg">{photo.Caption}</Text>
+                    <Text className="mb-1 mt-2 pl-3 text-[#FAFAFA] text-sm shadow-lg">@{photo.PostedBy}</Text>
+                    <Image className="w-full h-3/6 self-center" source={{uri: photo.Photo}} />
+                    <Text className="mt-2 mb-5 pl-3 text-[#FAFAFA] text-sm shadow-lg">{photo.Caption}</Text>
                     <Comments photoId={photo.Id} />
                 </View>
             </KeyboardAvoidingView>

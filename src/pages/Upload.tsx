@@ -5,8 +5,9 @@ import { ActivityIndicator, Alert, Button, Image,
 import * as ImagePicker from "expo-image-picker";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { auth, imageDb, mainDb } from "../FirebaseConfig/Firebase";
-import { addDoc, collection, getDocs, doc, updateDoc, FieldValue, arrayUnion, setDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, doc, updateDoc, FieldValue, arrayUnion, setDoc, query } from "firebase/firestore";
 import { useState } from "react";
+import { UserInfo } from "../types/types";
 
 export default function UploadPhoto(){
 
@@ -26,6 +27,20 @@ export default function UploadPhoto(){
             setPreviewImage("");
             console.error(err)
         }
+    }
+
+    const getCurrentUsername = async () => {
+        try{
+            const refID = query(collection(mainDb, "Users"));
+            const dataID = await getDocs(refID);
+            const users = dataID.docs.map((doc) => {
+                return {id: doc.id, ...doc.data() as UserInfo}
+            });
+            return users.find((user) => user.id === auth.currentUser?.uid)?.Username;
+        } catch(err) {
+            console.error(err);
+            return "Unknown"
+        } 
     }
 
     async function UploadCaption(imageUrl: string){
@@ -51,18 +66,22 @@ export default function UploadPhoto(){
             // const ref = collection(mainDb, "PhotoDetails");
             // await addDoc(ref, {Photo: imageUrl, Caption: caption, ID: imageID, Comments: []});
             
-            await setDoc(doc(mainDb, "PhotoDetails", String(imageID)), {
-                Id: imageID, 
-                Photo: imageUrl, 
-                Caption: caption, 
-                Comments: []
-              });
-
             //Add new post to the Posts array for the user
             const userDoc = doc(mainDb, "Users", auth.currentUser?.uid as string);
             await updateDoc(userDoc, {
                 Posts: arrayUnion(imageID)
             });
+
+            const username = await getCurrentUsername();
+
+            await setDoc(doc(mainDb, "PhotoDetails", String(imageID)), {
+                Id: imageID, 
+                Photo: imageUrl, 
+                Caption: caption,
+                PostedBy: username,
+                PostedById: auth.currentUser?.uid as string,
+                Comments: []
+              });
 
             //reset to default
             setCaption("");
@@ -120,7 +139,6 @@ export default function UploadPhoto(){
     //function to handle selecting image from either camera roll or camera
     //and displaying the preview to the user
     async function selectImage(useCameraRoll: boolean){
-
         //options for how the image will be saved and rendered
         const options: ImagePicker.ImagePickerOptions = {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -149,7 +167,7 @@ export default function UploadPhoto(){
 
     return (
         // Touchable because otherwise keyboard does not dismiss when you tap outside of textinput
-        <TouchableWithoutFeedback className="flex-1" onPress={Keyboard.dismiss}>
+        <TouchableWithoutFeedback className="flex-1 bg-white" onPress={Keyboard.dismiss}>
             <ScrollView>
                 <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100} className="flex-1">
                     <Text className="text-center text-lg">Choose how to upload your photo</Text>
@@ -168,9 +186,9 @@ export default function UploadPhoto(){
                     </View>
 
                     {/* Add a caption is inside of here */}
-                    <Text className="mx-1 mt-7">Add a caption</Text>
+                    <Text className="mx-1 mt-7 text-sm">Add a caption</Text>
                     <TextInput 
-                        className="align-top h-40 bg-slate-400 rounded-md mx-0.5 mt-2 px-2"
+                        className="align-top h-40 bg-[#B9D4F1] rounded-md mx-0.5 mt-2 px-2"
                         value={caption} 
                         onChangeText={setCaption} 
                         placeholder="Enter caption here"

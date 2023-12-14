@@ -9,7 +9,7 @@ export default function HomeRoute() {
     return (
     //Everything inside the navigator as a Screen component can be navigated to
       <StackNav.Navigator initialRouteName="Home">
-        <StackNav.Screen name="Home" component={Home} />
+        <StackNav.Screen name="TravelSnap" component={Home} />
         <StackNav.Screen name="Details" component={PhotoDetails} />
       </StackNav.Navigator>
     )

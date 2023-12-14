@@ -88,9 +88,9 @@ export default function Register(){
         
     }
   return (
-    <ScrollView className='flex-1 bg-gray-600'>
+    <ScrollView className='flex-1 bg-[#1A1C20] px-2 space-y-1'>
         {/* <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={height + 47} className='bg-white'> */}
-            <Text className="text-lg mx-2 mt-10">Name</Text>
+            <Text className="text-base font-light text-[#FFF6F6] mx-2 mt-10">Name</Text>
             <TextInput 
                 className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
                 placeholder='Enter your name' 
@@ -99,7 +99,7 @@ export default function Register(){
                 autoCapitalize='none'
                 autoCorrect/>
 
-            <Text className="text-lg mx-2">Email</Text>
+            <Text className="text-base font-light text-[#FFF6F6] mx-2">Email</Text>
             <TextInput 
                 className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
                 placeholder='Enter your email' 
@@ -108,7 +108,7 @@ export default function Register(){
                 autoCapitalize='none'
                 autoCorrect/>
 
-            <Text className="text-lg mx-2">Password</Text>
+            <Text className="text-base font-light text-[#FFF6F6] mx-2">Password</Text>
             <TextInput 
                 className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
                 placeholder='Enter your password' 
@@ -118,7 +118,7 @@ export default function Register(){
                 autoCorrect={false} 
                 secureTextEntry />
 
-            <Text className="text-lg mx-2">Re-enter Password</Text>
+            <Text className="text-base font-light text-[#FFF6F6] mx-2">Re-enter Password</Text>
             <TextInput 
                 className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
                 placeholder='Enter your password' 
