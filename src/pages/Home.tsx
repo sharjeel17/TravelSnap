@@ -17,7 +17,7 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
             setIsRefreshing(true);
 
             //get current photo ID which the new photo will have/be set to
-            const refID = query(collection(mainDb, "PhotoDetails"), orderBy("ID", "desc"));
+            const refID = query(collection(mainDb, "PhotoDetails"), orderBy("Id", "desc"));
             let dataID = await getDocs(refID);
 
             //keep ID in a variable
@@ -26,12 +26,12 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
             });
 
             setPhotos(photoDetails as Photos[]);
-            setIsRefreshing(false);
 
         } catch(err) {
-            setIsRefreshing(false);
             console.error(err);
 
+        } finally{
+            setIsRefreshing(false);
         }
         
     }
@@ -71,10 +71,10 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
             return (
                 // pressable image generated which will go to the details page of the image
                 <Pressable className="mb-6" onPress={() => { goToDetailsPage(item) } } >
-                    <Image className="h-96 w-100" source={{uri: item.Photo}} />
+                    <Image className="h-96 w-100" source={{uri: item.photo}} />
                 </Pressable>
             )}}
-            keyExtractor={item => String(item.ID)} 
+            keyExtractor={item => String(item.id)} 
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
         />

@@ -1,7 +1,8 @@
 import { View, Text, Alert, ScrollView, TextInput, ActivityIndicator, Button } from 'react-native'
-import { auth } from '../FirebaseConfig/Firebase';
+import { auth, mainDb } from '../FirebaseConfig/Firebase';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
 export default function Register(){
     const [username, setUsername] = useState('');
@@ -42,6 +43,18 @@ export default function Register(){
         return true;
     }
 
+    //create a user document in firestore with 
+    async function createUserDoc(userId: string){
+        try{
+        await setDoc(doc(mainDb, "Users", userId), {
+            Username: username,
+            Posts: [],
+          });
+        }catch(err){
+            console.error(err);
+        }
+    }
+
     //function to register the user
     async function SignUp(){
 
@@ -55,10 +68,17 @@ export default function Register(){
             setLoadingLogin(true);
             const response = await createUserWithEmailAndPassword(auth,email, password);
             auth.signOut();
+
+            //create a user in firestore to store additional information
+            //the authenicated userid will be used as the id in firestore for referencing and making a superficial link
+            await createUserDoc(response.user.uid);
+
+            //reset everything to default
             setUsername('');
             setEmail('');
             setPassword('');
             setRepassword('');
+
         }catch(err){
             console.log(err);
             Alert.alert("Error signing up", "Email or Username may already be in use");

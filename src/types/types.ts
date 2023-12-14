@@ -1,6 +1,17 @@
 export interface Photos {
-    Caption: string,
-    ID: number,
-    Photo: string,
-    Comments: number[]
+    id: number,
+    photo: string,
+    caption: string,
+    comments: number[]
+}
+
+export interface Comment {
+    commentID: string,
+    comment: string,
+    postedBy: string
+}
+
+export interface UserInfo {
+    username: string,
+    posts: number[]
 }

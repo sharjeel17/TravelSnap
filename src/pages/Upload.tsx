@@ -4,8 +4,8 @@ import { ActivityIndicator, Alert, Button, Image,
         TouchableWithoutFeedback, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
-import { imageDb, mainDb } from "../FirebaseConfig/Firebase";
-import { addDoc, collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { auth, imageDb, mainDb } from "../FirebaseConfig/Firebase";
+import { addDoc, collection, getDocs, doc, updateDoc, FieldValue, arrayUnion, setDoc } from "firebase/firestore";
 import { useState } from "react";
 
 export default function UploadPhoto(){
@@ -48,8 +48,21 @@ export default function UploadPhoto(){
 
             //access Photo Details collection and add a new document in the collection
             //with the current ID, Url to the image on firebase storage, the caption and the comments array
-            const ref = collection(mainDb, "PhotoDetails");
-            await addDoc(ref, {Photo: imageUrl, Caption: caption, ID: imageID, Comments: []});
+            // const ref = collection(mainDb, "PhotoDetails");
+            // await addDoc(ref, {Photo: imageUrl, Caption: caption, ID: imageID, Comments: []});
+            
+            await setDoc(doc(mainDb, "PhotoDetails", String(imageID)), {
+                Id: imageID, 
+                Photo: imageUrl, 
+                Caption: caption, 
+                Comments: []
+              });
+
+            //Add new post to the Posts array for the user
+            const userDoc = doc(mainDb, "Users", auth.currentUser?.uid as string);
+            await updateDoc(userDoc, {
+                Posts: arrayUnion(imageID)
+            });
 
             //reset to default
             setCaption("");
@@ -95,12 +108,12 @@ export default function UploadPhoto(){
             const imageUrl = await getDownloadURL(data.ref)
             console.log(imageUrl);
             await UploadCaption(imageUrl);
-            setIsUploading(false);
 
         } catch(err){
             setPreviewImage("");
-            setIsUploading(false);
             console.error(err);
+        } finally {
+            setIsUploading(false);
         }
     }
 
