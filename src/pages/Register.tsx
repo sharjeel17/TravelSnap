@@ -13,6 +13,7 @@ export default function Register(){
     //validate entered input
     //invalid will return false and valid will return true
     function validateInput(){
+
         //validation
         if(username === ''){
             Alert.alert("Please enter a name");
@@ -25,6 +26,9 @@ export default function Register(){
             return false;
         }
 
+        if(password.length < 6){
+            Alert.alert("Password error", "Password must be at least 6 characters long");
+        }
         //validation
         if (repassword !== password){
             Alert.alert("Passwords do not match");
@@ -37,7 +41,7 @@ export default function Register(){
     async function SignUp(){
 
         //validation
-        if(!validateInput){
+        if(!validateInput()){
             return;
         }
 
@@ -46,9 +50,13 @@ export default function Register(){
             setLoadingLogin(true);
             const response = await createUserWithEmailAndPassword(auth,email, password);
             auth.signOut();
+            setUsername('');
+            setEmail('');
+            setPassword('');
+            setRepassword('');
         }catch(err){
             console.log(err);
-            Alert.alert("Error signing up");
+            Alert.alert("Error signing up", "Email or Username may already be in use");
         }finally{
             setLoadingLogin(false);
         }
@@ -60,7 +68,7 @@ export default function Register(){
             <Text className="text-lg mx-2 mt-10">Name</Text>
             <TextInput 
                 className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
-                placeholder='Enter your email' 
+                placeholder='Enter your name' 
                 value={username} 
                 onChangeText={setUsername} 
                 autoCapitalize='none'
