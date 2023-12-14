@@ -1,42 +1,56 @@
-import { View, Text, TextInput, Button, ActivityIndicator, KeyboardAvoidingView, ScrollView, Alert } from 'react-native'
-import { useState } from 'react'
+import { View, Text, Alert, ScrollView, TextInput, ActivityIndicator, Button } from 'react-native'
 import { auth } from '../FirebaseConfig/Firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useHeaderHeight } from '@react-navigation/elements'
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
-export default function Login({navigation}: NativeStackScreenProps<any>){
+export default function Register(){
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loadingLogin, setLoadingLogin] = useState(false);
-    const height = useHeaderHeight();
+    
+    //function to register the user
+    async function SignUp(){
 
-    //function to sign user in
-    async function SignIn(){
+        //validation
+        if(username === ''){
+            Alert.alert("Please enter a name");
+            return
+        }
 
         //validation
         if(email === '' || password === ''){
             Alert.alert("Please enter email and password");
             return;
         }
-        
+
+        //create user and set displayname as user's entered name
         try{
             setLoadingLogin(true);
-            const response = await signInWithEmailAndPassword(auth, email, password);
-            console.log('IS EMAIL VERIFIED',response.user.emailVerified);
-        } catch(err){
+            const response = await createUserWithEmailAndPassword(auth,email, password);
+            await updateProfile(response.user, {displayName: username});
+            auth.signOut();
+        }catch(err){
             console.log(err);
-            Alert.alert("Error signing in, please re-check email and password");
+            Alert.alert("Error signing up");
         }finally{
             setLoadingLogin(false);
         }
         
     }
-
-    return (
-        <ScrollView className='flex-1 bg-gray-600'>
+  return (
+    <ScrollView className='flex-1 bg-gray-600'>
         {/* <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={height + 47} className='bg-white'> */}
-            <Text className="text-lg mx-2 mt-10">Email</Text>
+            <Text className="text-lg mx-2 mt-10">Name</Text>
+            <TextInput 
+                className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
+                placeholder='Enter your email' 
+                value={username} 
+                onChangeText={setUsername} 
+                autoCapitalize='none'
+                autoCorrect/>
+
+            <Text className="text-lg mx-2">Email</Text>
             <TextInput 
                 className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
                 placeholder='Enter your email' 
@@ -56,13 +70,10 @@ export default function Login({navigation}: NativeStackScreenProps<any>){
                 secureTextEntry />
             
             {loadingLogin ? (<ActivityIndicator size="large" />) : (
-            <View className='flex-row gap-4 justify-center'>
-                <Button title='Sign In' onPress={SignIn}/>
-                <Button title='Sign Up'onPress={() => {navigation.navigate("Register")}}/>
-            </View>
+                <Button title='Sign Up' onPress={SignUp}/>
             )}
 
         {/* </KeyboardAvoidingView> */}
         </ScrollView>
-    )
+  )
 }

@@ -12,8 +12,8 @@ export default function MainRoutes(){
     //HomeRoute uses stack navigator
       <Tab.Navigator initialRouteName="Home Screen">
           <Tab.Screen name="Home Screen" component={HomeRoute} options={{headerShown: false}}/>
-          <Tab.Screen name="Upload Photo Screen" component={UploadPhoto}/>
-          <Tab.Screen name="Profile Screen" component={Profile}/>
+          <Tab.Screen name="Upload Photo Screen" component={UploadPhoto} options={{headerTitle:"Upload Photo"}}/>
+          <Tab.Screen name="Profile Screen" component={Profile} options={{headerTitle: "Profile"}}/>
       </Tab.Navigator>
   );
 };

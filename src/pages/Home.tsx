@@ -1,4 +1,4 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { NativeStackScreenProps} from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { FlatList, Image, Pressable, View } from "react-native";
 import { Photos } from '../types/types';
