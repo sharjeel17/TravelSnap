@@ -7,20 +7,37 @@ export default function Register(){
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [repassword, setRepassword] = useState('');
     const [loadingLogin, setLoadingLogin] = useState(false);
-    
-    //function to register the user
-    async function SignUp(){
 
+    //validate entered input
+    //invalid will return false and valid will return true
+    function validateInput(){
         //validation
         if(username === ''){
             Alert.alert("Please enter a name");
-            return
+            return false;
         }
 
         //validation
         if(email === '' || password === ''){
             Alert.alert("Please enter email and password");
+            return false;
+        }
+
+        //validation
+        if (repassword !== password){
+            Alert.alert("Passwords do not match");
+            return false;
+        }
+        return true;
+    }
+
+    //function to register the user
+    async function SignUp(){
+
+        //validation
+        if(!validateInput){
             return;
         }
 
@@ -28,7 +45,6 @@ export default function Register(){
         try{
             setLoadingLogin(true);
             const response = await createUserWithEmailAndPassword(auth,email, password);
-            await updateProfile(response.user, {displayName: username});
             auth.signOut();
         }catch(err){
             console.log(err);
@@ -65,6 +81,16 @@ export default function Register(){
                 placeholder='Enter your password' 
                 value={password} 
                 onChangeText={setPassword} 
+                autoCapitalize='none' 
+                autoCorrect={false} 
+                secureTextEntry />
+
+            <Text className="text-lg mx-2">Re-enter Password</Text>
+            <TextInput 
+                className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
+                placeholder='Enter your password' 
+                value={repassword} 
+                onChangeText={setRepassword} 
                 autoCapitalize='none' 
                 autoCorrect={false} 
                 secureTextEntry />
