@@ -71,10 +71,10 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
             return (
                 // pressable image generated which will go to the details page of the image
                 <Pressable className="mb-6" onPress={() => { goToDetailsPage(item) } } >
-                    <Image className="h-96 w-100" source={{uri: item.photo}} />
+                    <Image className="h-96 w-100" source={{uri: item.Photo}} />
                 </Pressable>
             )}}
-            keyExtractor={item => String(item.id)} 
+            keyExtractor={item => String(item.Id)} 
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
         />
