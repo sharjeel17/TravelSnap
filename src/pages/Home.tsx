@@ -55,7 +55,7 @@ export default function Home({navigation}: NativeStackScreenProps<any>){
 
 
   return (
-    <View>
+    <View className='flex-1'>
         {/* The Flatlist will display all of photos that are stored in the backend */}
         {/* Flatlist will render each item one by one for the length of the photos variable/array */}
         <FlatList 
