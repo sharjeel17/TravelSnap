@@ -12,21 +12,6 @@ export default function Comments({ photoId }: Props){
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState("");
     const [isRefreshing, setIsRefreshing] = useState(false);
-    // const [user, setUser] = useState<UserInfo>();
-
-    // async function getUserInfo(){
-    //     try{
-    //         const userRef = doc(mainDb, "Users", auth.currentUser!.uid);
-    //         const userDocSnap = await getDoc(userRef);
-    //         const userInfo = userDocSnap.data();
-    //         console.log(userInfo);
-    //         setUser({username: userInfo!.Username, posts: userInfo!.Posts})
-    //         console.log(user);
-    //     }catch(err){
-    //         console.log(err);
-    //     }
-        
-    // }
 
     async function getComments(){
         try{
@@ -85,7 +70,7 @@ export default function Comments({ photoId }: Props){
             });
 
             //increment ID, used for referencing Comments documents, by 1
-            const currentIdDoc = doc(mainDb, "CommentIdInc", "VbkMQKClznOzVLdnXfbn");
+            const currentIdDoc = doc(mainDb, "CommentIdInc", "I2Y2rXSx0oK6BO3RXT0n");
             commentID++;
             await updateDoc(currentIdDoc, {ID: commentID});
             Alert.alert("Comment uploaded");

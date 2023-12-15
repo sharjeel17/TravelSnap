@@ -88,7 +88,7 @@ export default function UploadPhoto(){
             setPreviewImage("");
 
             //increment ID, used for referencing PhotoDetails documents, by 1
-            const currentIdDoc = doc(mainDb, "PhotoIdInc", "8Rle9meLbs67tAARp5yI");
+            const currentIdDoc = doc(mainDb, "PhotoIdInc", "EwrH2DSpEcCDmyR9CsBu");
             imageID++;
             await updateDoc(currentIdDoc, {ID: imageID})
 
