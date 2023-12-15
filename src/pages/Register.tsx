@@ -67,7 +67,6 @@ export default function Register(){
         try{
             setLoadingLogin(true);
             const response = await createUserWithEmailAndPassword(auth,email, password);
-            auth.signOut();
 
             //create a user in firestore to store additional information
             //the authenicated userid will be used as the id in firestore for referencing and making a superficial link

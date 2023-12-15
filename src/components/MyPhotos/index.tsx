@@ -6,10 +6,11 @@ import { Photos, UserInfo } from '../../types/types';
 
 export default function MyPhotos(){
     const [photos, setPhotos] = useState<Photos[]>([]);
-
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     async function getPhotos(){
         try{
+          setIsRefreshing(true);
             //get current user's user info from backend
             const ref = doc(mainDb, "Users", auth.currentUser!.uid);
             const docSnap = await getDoc(ref);
@@ -30,7 +31,13 @@ export default function MyPhotos(){
 
         } catch(err){
             console.error(err)
+        } finally{
+          setIsRefreshing(false);
         }
+    }
+
+    function handleRefresh(){
+      getPhotos();
     }
 
     useEffect(() => {
@@ -48,7 +55,8 @@ export default function MyPhotos(){
                 <Image className="h-full w-full rounded-md" source={{uri: item.Photo}} />
             </View>
         )}}
-      />
+      refreshing={isRefreshing}
+      onRefresh={handleRefresh}/>
     </View>
   )
 }
