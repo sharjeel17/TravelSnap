@@ -25,7 +25,8 @@
     "tailwindcss": "^3.3.2",
     "uuid": "^9.0.1",
     "expo-file-system": "~15.4.5",
-    "expo-image-picker": "~14.3.2"
+    "expo-image-picker": "~14.3.2",
+    "@react-native-async-storage/async-storage": "1.18.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

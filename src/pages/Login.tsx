@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, ActivityIndicator, KeyboardAvoidingView, ScrollView, Alert } from 'react-native'
+import { View, Text, TextInput, Button, ActivityIndicator, ScrollView, Alert } from 'react-native'
 import { useState } from 'react'
 import { auth } from '../FirebaseConfig/Firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -23,7 +23,6 @@ export default function Login({navigation}: NativeStackScreenProps<any>){
         try{
             setLoadingLogin(true);
             const response = await signInWithEmailAndPassword(auth, email, password);
-            console.log('IS EMAIL VERIFIED',response.user.emailVerified);
         } catch(err){
             console.log(err);
             Alert.alert("Error signing in, please re-check email and password");
@@ -34,8 +33,7 @@ export default function Login({navigation}: NativeStackScreenProps<any>){
     }
 
     return (
-        <ScrollView className='flex bg-[#1A1C20] px-3 space-y-1 py-[50%]'>
-        {/* <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={height + 47} className='bg-white'> */}
+        <ScrollView className='flex bg-[#1A1C20] px-3 space-y-1 py-[30%]'>
             <Text className="text-lg font-light text-[#FFF6F6] mx-2 mt-10">Email</Text>
             <TextInput 
                 className='bg-white px-2 py-3 mb-5 rounded-lg border-x-2 mx-1'
@@ -61,8 +59,6 @@ export default function Login({navigation}: NativeStackScreenProps<any>){
                 <Button title='Sign Up'onPress={() => {navigation.navigate("Register")}}/>
             </View>
             )}
-
-        {/* </KeyboardAvoidingView> */}
         </ScrollView>
     )
 }

@@ -1,19 +1,18 @@
 import { ActivityIndicator, Alert, Button, Image,
-        Keyboard, KeyboardAvoidingView, Pressable, 
-        ScrollView, Text, TextInput, 
-        TouchableWithoutFeedback, View } from "react-native";
+        Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { auth, imageDb, mainDb } from "../FirebaseConfig/Firebase";
-import { addDoc, collection, getDocs, doc, updateDoc, FieldValue, arrayUnion, setDoc, query } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, arrayUnion, setDoc, } from "firebase/firestore";
 import { useState } from "react";
-import { UserInfo } from "../types/types";
+import getCurrentUser from "../util/getCurrentUsername";
 
 export default function UploadPhoto(){
 
     const [caption, setCaption] = useState("");
     const [previewImage, setPreviewImage] = useState("");
     const [isUploading, setIsUploading] = useState(false);
+    const [addBottomPadding, setAddBottomPadding] = useState(false);
 
    
     //function to convert uri of image to a blob
@@ -29,19 +28,7 @@ export default function UploadPhoto(){
         }
     }
 
-    const getCurrentUsername = async () => {
-        try{
-            const refID = query(collection(mainDb, "Users"));
-            const dataID = await getDocs(refID);
-            const users = dataID.docs.map((doc) => {
-                return {id: doc.id, ...doc.data() as UserInfo}
-            });
-            return users.find((user) => user.id === auth.currentUser?.uid)?.Username;
-        } catch(err) {
-            console.error(err);
-            return "Unknown"
-        } 
-    }
+    
 
     async function UploadCaption(imageUrl: string){
 
@@ -61,18 +48,14 @@ export default function UploadPhoto(){
             });
             let imageID: number = imageIDArr[0]["ID"];
 
-            //access Photo Details collection and add a new document in the collection
-            //with the current ID, Url to the image on firebase storage, the caption and the comments array
-            // const ref = collection(mainDb, "PhotoDetails");
-            // await addDoc(ref, {Photo: imageUrl, Caption: caption, ID: imageID, Comments: []});
-            
-            //Add new post to the Posts array for the user
+            //Add the Id of the new image inside of the user's Posts field
             const userDoc = doc(mainDb, "Users", auth.currentUser?.uid as string);
             await updateDoc(userDoc, {
                 Posts: arrayUnion(imageID)
             });
 
-            const username = await getCurrentUsername();
+            //get username of current user
+            const username = await getCurrentUser();
 
             await setDoc(doc(mainDb, "PhotoDetails", String(imageID)), {
                 Id: imageID, 
@@ -166,10 +149,8 @@ export default function UploadPhoto(){
     }
 
     return (
-        // Touchable because otherwise keyboard does not dismiss when you tap outside of textinput
-        <TouchableWithoutFeedback className="flex-1 bg-white" onPress={Keyboard.dismiss}>
             <ScrollView>
-                <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100} className="flex-1">
+                <View>
                     <Text className="text-center text-lg">Choose how to upload your photo</Text>
 
                     {/* if no preview image is present then use default image */}
@@ -193,12 +174,18 @@ export default function UploadPhoto(){
                         onChangeText={setCaption} 
                         placeholder="Enter caption here"
                         multiline
-                        maxLength={500} />
+                        maxLength={500} 
+                        onFocus={() => {setAddBottomPadding(true); console.log("runs 1")}}
+                        onBlur={() => {setAddBottomPadding(false); console.log("runs 1")}}
+                        />
                     
                     {/* If user clicked upload then disable button until the image and caption are both uploaded to the backend */}
                     {isUploading ? ( <ActivityIndicator size="large" /> ) : (<Button title="Upload photo" onPress={UploadPhotoFunc} disabled={isUploading}/>)}
-                </KeyboardAvoidingView>
+                </View>
+                {addBottomPadding && 
+                    <View className="pt-[300]">
+                    </View>
+                }
             </ScrollView>
-        </ TouchableWithoutFeedback>
     );
 }
