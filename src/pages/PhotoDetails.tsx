@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Image,Keyboard,KeyboardAvoidingView, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Image,Keyboard,KeyboardAvoidingView, Platform, Text, TouchableWithoutFeedback, View } from "react-native";
 import { Photos } from '../types/types';
 import Comments from '../components/Comments';
 import { useHeaderHeight } from '@react-navigation/elements'
@@ -12,7 +12,7 @@ export default function PhotoDetails({route}: NativeStackScreenProps<any>){
     return (
         
         <View className='flex-1 bg-[#1A1C20]'>
-            <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={height + 100} className='flex-1 bg-[#1A1C20]'>
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding": "height"} keyboardVerticalOffset={height + 100} className='flex-1 bg-[#1A1C20]'>
                 <View>
                     <TouchableWithoutFeedback className="flex-1 bg-white" onPress={Keyboard.dismiss}>
                         <View>
